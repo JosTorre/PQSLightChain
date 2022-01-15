@@ -6,9 +6,9 @@ import java.security.PublicKey;
 
 /** Represents a response which returns a PublicKey. */
 public class PublicKeyResponse extends GenericResponse {
-  public final PublicKey result;
+  public final byte[] result;
 
-  public PublicKeyResponse(PublicKey result) {
+  public PublicKeyResponse(byte[] result) {
     this.result = result;
   }
 

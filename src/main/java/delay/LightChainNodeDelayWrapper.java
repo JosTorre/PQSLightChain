@@ -49,7 +49,7 @@ public class LightChainNodeDelayWrapper extends SkipNodeDelayWrapper implements 
     }
 
     @Override
-    public PublicKey getPublicKey() {
+    public byte[] getPublicKey() {
         before();
         return innerNode.getPublicKey();
     }

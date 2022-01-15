@@ -69,6 +69,24 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+	    <profile>
+		    <id>linux</id>
+		    <activation>
+			    <activeByDefault>true</activeByDefault>
+			    <property>
+				    <name>platform</name>
+				    <value>nix</value>
+			    </property>
+		     </activation>
+		     <properties>
+			     <lib_name>liboqs-jni.so</lib_name>
+			     <liboqs.include.dir>/usr/local/include</liboqs.include.dir>
+		 	     <liboqs.lib.dir>/usr/local/lib</liboqs.lib.dir>
+			     <java.os.include>-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux</java.os.include>
+		     </properties>
+	     </profile>
+    </profiles>
     <repositories>
 		<repository>
 			<id>jitpack.io</id>

@@ -66,7 +66,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
     this.token = params.getInitialToken();
     this.logger = Logger.getLogger(port + "");
     Tmode = (int) Math.round(Math.random());
-    String name = hasher.getHash(digitalSignature.getPublicKey().getEncoded(), params.getLevels());
+    String name = hasher.getHash(digitalSignature.getPublicKey(), params.getLevels());
     super.setNumID(Integer.parseInt(name, 2));
     name = hasher.getHash(name, params.getLevels());
     super.setNameID(name);
@@ -536,7 +536,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
       // get the sigma array of the block
       List<SignedBytes> blkSigma = blk.getSigma();
       // retrieve the public key of the owner of the block
-      PublicKey ownerPublicKey = getOwnerPublicKey(blk.getOwner());
+      byte[] ownerPublicKey = getOwnerPublicKey(blk.getOwner());
       boolean verified = false;
       if (ownerPublicKey == null) return false;
       // iterate over the sigma array looking for the signature of the owner
@@ -722,7 +722,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
       // now get the sigma array from transaction and iterate over signatures it
       // contains
       List<SignedBytes> tSigma = t.getSigma();
-      PublicKey ownerPublicKey = getOwnerPublicKey(t.getOwner());
+      byte[] ownerPublicKey = getOwnerPublicKey(t.getOwner());
       boolean verified = false;
       if (ownerPublicKey == null) return false;
       for (int i = 0; i < tSigma.size(); ++i) {
@@ -774,7 +774,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
    * @param num numerical ID of node whose public key is to be retrieved
    * @return the public key of the node whose numerical ID was supplied
    */
-  public PublicKey getOwnerPublicKey(int num) {
+  public byte[] getOwnerPublicKey(int num) {
     try {
       // find owner from the network
       NodeInfo owner = searchByNumID(num);
@@ -788,10 +788,10 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
       PublicKeyResponse response = PublicKeyResponseOf(underlay.sendMessage(
               new GetPublicKeyRequest(),
               owner.getAddress()));
-      PublicKey pk = response.result;
+      byte[] pk = response.result;
 
       // Hash the public key and store the hash value as int
-      int hashedKey = Integer.parseInt(hasher.getHash(pk.getEncoded(), params.getLevels()), 2);
+      int hashedKey = Integer.parseInt(hasher.getHash(pk, params.getLevels()), 2);
       // if hashedKey is not equal to the provided numID, then there is a problem
       // and it is printed to the console
       if (hashedKey != num) {
@@ -805,7 +805,7 @@ public class LightChainNode extends SkipNode implements LightChainInterface {
     }
   }
 
-  public PublicKey getPublicKey() {
+  public byte[] getPublicKey() {
     return digitalSignature.getPublicKey();
   }
 

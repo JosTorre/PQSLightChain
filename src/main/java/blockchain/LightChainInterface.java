@@ -14,7 +14,7 @@ public interface LightChainInterface extends SkipGraphNode {
 
 	public boolean getMode();
 
-	public PublicKey getPublicKey();
+	public byte[] getPublicKey();
 
 	public void removeFlagNode();
 
